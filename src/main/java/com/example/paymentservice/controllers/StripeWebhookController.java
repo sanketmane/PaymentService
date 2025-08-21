@@ -14,7 +14,10 @@ public class StripeWebhookController {
     // api on payment link generation or checkout(these options
     // are configurable on strip page.
     @PostMapping
-    public void listenToEvents(@RequestBody String event) {
+    public void listenToEvents(@RequestBody String event) { // event here means the json object
+        // currently 2 events are configured in Stripe to trigger webhook
+        // On payment link creation
+        // On checkout
         System.out.println(event);
     }
 }

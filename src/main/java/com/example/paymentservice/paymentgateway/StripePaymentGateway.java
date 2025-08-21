@@ -1,19 +1,25 @@
 package com.example.paymentservice.paymentgateway;
 
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentLink;
 import com.stripe.model.Price;
 import com.stripe.param.PaymentLinkCreateParams;
 import com.stripe.param.PriceCreateParams;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StripePaymentGateway implements IPaymentGateway {
 
+    @Value("${stripe.apiKey}")
+    private String stripeApiKey;
+
     @Override
     public String generatePaymentLink(Long amount, String orderId, String phoneNumber, String name, String email) {
-        Price price = createPrice(amount);
         try {
+            Stripe.apiKey = this.stripeApiKey;
+            Price price = createPrice(amount);
             PaymentLinkCreateParams params = PaymentLinkCreateParams.builder()
                     .addLineItem(
                             PaymentLinkCreateParams.LineItem.builder()
